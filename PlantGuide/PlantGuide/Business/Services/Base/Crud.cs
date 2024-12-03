@@ -11,7 +11,7 @@ public class Crud<T, CreateTDTO> : ICrud<T, CreateTDTO>
     private readonly IMapper _mapper;
     private readonly IRepo<T, int> _repo;
 
-    public Service(IMapper mapper, IRepo<T, int> repo)
+    public Crud(IMapper mapper, IRepo<T, int> repo)
     {
         _mapper = mapper;
         _repo = repo;
