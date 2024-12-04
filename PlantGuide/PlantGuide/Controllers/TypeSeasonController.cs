@@ -1,21 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlantGuide.Business.DTO;
 using PlantGuide.Business.Exceptions;
-using PlantGuide.Business.Services.Base;
+using PlantGuide.Business.Services.Interfaces;
 
 namespace PlantGuide.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CrudBaseController<T,TDTO> : ControllerBase
-    where T : class
-    where TDTO : class
+public class TypeSeasonController : ControllerBase
 {
-    private readonly ICrud<T, TDTO> _service;
-    public CrudBaseController(ICrud<T, TDTO> service)
+    private readonly ITypeSeasonService _service;
+
+    public TypeSeasonController(ITypeSeasonService service)
     {
         _service = service;
     }
+    [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
         try
@@ -32,6 +33,7 @@ public class CrudBaseController<T,TDTO> : ControllerBase
         }
         return NoContent();
     }
+    [HttpGet("GetById")]
 
     public async Task<IActionResult> GetById(int id)
     {
@@ -54,20 +56,22 @@ public class CrudBaseController<T,TDTO> : ControllerBase
 
         return NoContent();
     }
-    public async Task<IActionResult> Post(TDTO model)
+    [HttpPost("add")]
+    public async Task<IActionResult> Post(CreateTypeSeasonDTO model)
     {
         var data = await _service.AddAsync(model);
         return Ok(data);
     }
+    [HttpDelete("Delete")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
         return Ok();
     }
-    public async Task<IActionResult> Update(int id, TDTO DTO)
+    [HttpPut("Update")]
+    public async Task<IActionResult> Update(int id, CreateTypeSeasonDTO DTO)
     {
         var data = await _service.UpdateByIdAsync(id, DTO);
         return Ok(data);
     }
-
 }
